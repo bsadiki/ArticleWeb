@@ -1,0 +1,63 @@
+<div class="container spacer">
+  <div class="panel panel-primary">
+    <div class="panel-heading">Liste des articles</div>
+    <div class="panel-body">
+      <div class="form-group">
+        <label>Mot clé</label>
+        <input type="text" [(ngModel)]= "motCle" (ngModelChange)="chercher()"/>
+        <button class="btn btn-primary" (click)="chercher()">Chercher</button>
+      </div>
+      <table class="table table-striped">
+        <tr>
+          <th>ID</th><th>Titre</th><th>Description</th><th>Photo</th>
+        </tr>
+        <tr *ngFor="let article of pageArticle">
+          <td>{{article.id}}</td>
+          <td>{{article.titre}}</td>
+          <td>{{article.description}}</td>
+          <td>
+            <img src="{{article.photo}}" class="img-thumbnail image">
+          </td>
+          <td><a (click)="onEditArticle(article.id)" class="clickable">Edit</a></td>
+          <td><a (click)="onDeleteArticle(article)" class="clickable">Delete</a></td>
+        </tr>
+      </table>
+      <button type="button" class="btn btn-primary spacer" data-toggle="modal" data-target="#myModal">
+        Nouveau Article
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-white bg-primary">
+        <h5 class="modal-title" id="exampleModalLabel">Nouveau Article</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="container spacer">
+          <div class="form-group">
+            <label for="titre">Titre</label>
+            <input [(ngModel)]="article.titre" type="text" class="form-control" id="titre" placeholder="Entrer le titre" >
+          </div>
+          <div class="form-group" >
+            <label for="description">Description</label>
+            <input [(ngModel)]="article.description" type="text" class="form-control" id="description" placeholder="Entrer une description">
+          </div>
+          <div class="form-group">
+            <label for="image">Photo</label>
+            <input type="file" id="image" (change)="handleFileSelect($event)">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" (click)="saveArticle()">Save</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
