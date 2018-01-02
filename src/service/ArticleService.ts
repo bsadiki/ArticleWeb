@@ -13,4 +13,8 @@ export class ArticleService {
   addArticle(article : Article){
     return this.http.post('http://localhost:8080/addArticle',article).map(resp => resp.json());
   }
+  deleteArticle(articleId: number){
+    return this.http.delete('http://localhost:8080/delete?id='+articleId)
+      .map(resp => resp.json());
+  }
 }

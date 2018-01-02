@@ -1,6 +1,6 @@
 <div class="container spacer">
   <div class="panel panel-primary">
-    <div class="panel-heading">Liste des articles</div>
+    <div class="panel-heading"></div>
     <div class="panel-body">
       <div class="form-group">
         <label>Mot clé</label>
@@ -11,18 +11,31 @@
         <tr>
           <th>ID</th><th>Titre</th><th>Description</th><th>Photo</th>
         </tr>
-        <tr *ngFor="let article of pageArticle">
-          <td>{{article.id}}</td>
-          <td>{{article.titre}}</td>
-          <td>{{article.description}}</td>
+        <tr *ngFor="let a of pageArticle">
+          <td>{{a.id}}</td>
+          <td>{{a.titre}}</td>
+          <td>{{a.description}}</td>
           <td>
-            <img src="{{article.photo}}" class="img-thumbnail image">
+            <img src="{{a.photo}}" class="img-thumbnail image">
           </td>
-          <td><a (click)="onEditArticle(article.id)" class="clickable">Edit</a></td>
-          <td><a (click)="onDeleteArticle(article)" class="clickable">Delete</a></td>
+          <td><a (click)="onEditArticle(a)" class="clickable" data-toggle="modal" data-target="#myModal">Edit</a></td>
+          <td><a (click)="onDeleteArticle(a)" class="clickable">Delete</a></td>
         </tr>
       </table>
-      <button type="button" class="btn btn-primary spacer" data-toggle="modal" data-target="#myModal">
+      <nav aria-label="Ma pagination">
+        <ul class="pagination">
+          <li class="page-item" [ngClass]="{'disabled' : currentpage==0}" >
+            <a class="page-link clickable" (click)="gotoPage(currentpage-1)">Previous</a>
+          </li>
+          <li [ngClass]="{'active':i==currentpage}" *ngFor="let p of pages; let i=index" class="page-item">
+            <a class="page-link clickable" (click)="gotoPage(i)">{{i+1}}</a>
+          </li>
+          <li class="page-item" [ngClass]="{'disabled' : currentpage==pages?.length-1}">
+            <a class="page-link clickable" (click)="gotoPage(currentpage+1)">Next</a>
+          </li>
+        </ul>
+      </nav>
+      <button (click)="onNewArticle()" type="button" class="btn btn-primary spacer" data-toggle="modal" data-target="#myModal">
         Nouveau Article
       </button>
     </div>
@@ -33,7 +46,8 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header text-white bg-primary">
-        <h5 class="modal-title" id="exampleModalLabel">Nouveau Article</h5>
+        <h5 *ngIf="mode==0" class="modal-title" id="newArticleLabel">Nouveau article</h5>
+        <h5 *ngIf="mode==1" class="modal-title" id="EditArticleLabel">Modifier l'article</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
